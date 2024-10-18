@@ -5,7 +5,7 @@ function App() {
   const [weatherData, setWeatherData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [temperatureUnit, setTemperatureUnit] = useState("C"); // State to track temperature unit
+  const [temperatureUnit, setTemperatureUnit] = useState("C");
 
   const fetchWeatherData = async () => {
     try {
