@@ -6,19 +6,18 @@ const cors = require("cors");
 const app = express();
 const PORT = 5000;
 
-// Enable CORS
+
 app.use(cors());
 
-// Connect to MongoDB
+
 mongoose
   .connect("mongodb://localhost:27017/Weather")
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log("MongoDB connection error:", err));
 
-// Middleware
 app.use(express.json());
 
-// Weather Summary Schema
+
 const weatherSummarySchema = new mongoose.Schema({
   date: { type: Date, required: true },
   averageTemp: Number,
@@ -31,7 +30,7 @@ const weatherSummarySchema = new mongoose.Schema({
 const WeatherSummary = mongoose.model("WeatherSummary", weatherSummarySchema);
 
 // API Key and Cities
-const API_KEY = "0defb3694113ab99f82fabcdd089e37a"; // Directly hardcoded here
+const API_KEY = "0defb3694113ab99f82fabcdd089e37a"; // change api key 
 const cities = [
   "Delhi",
   "Mumbai",
@@ -72,17 +71,17 @@ const getWeatherData = async () => {
   return Promise.all(promises);
 };
 
-// Route to fetch weather data and save it to the database
+
 app.get("/api/weather/update", async (req, res) => {
   try {
     const responses = await getWeatherData();
     console.log("Good API: fetching weather details");
 
-    // Filter out null responses (in case some city data failed)
+   
     const validResponses = responses.filter((response) => response !== null);
     console.log("Valid responses received");
 
-    // Save summaries to the database, ensuring no duplicates
+  
     for (let summary of validResponses) {
       // Check if an entry for this city and date exists
       const existingSummary = await WeatherSummary.findOne({
@@ -90,7 +89,7 @@ app.get("/api/weather/update", async (req, res) => {
         city: summary.city,
       });
       if (!existingSummary) {
-        await WeatherSummary.create(summary); // Only create if not already existing
+        await WeatherSummary.create(summary); 
       }
     }
 
